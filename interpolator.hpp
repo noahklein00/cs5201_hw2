@@ -1,3 +1,9 @@
+// Programmer : Noah Klein
+// Instructor : Price
+// Class      : CS5201 Spring 2020
+// Assignment : Homework 2 - Templated Interpolator
+// Filename   : interpolator.hpp
+
 #include "interpolator.h"
 
 using namespace std;
