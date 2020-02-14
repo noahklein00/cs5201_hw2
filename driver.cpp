@@ -45,12 +45,14 @@ int main()
 	
 	catch(IncrementErr e)
 	{
-		cerr << "ERROR!! Independent variable must be strictly increasing: " << e.getIncrement() << endl;
+		cerr << "ERROR!! Independent variable must be strictly increasing: "
+			<< e.getIncrement() << endl;
 	}
 	
 	catch(BoundErr e)
 	{
-		cerr << "ERROR!! Attempted access out of bounds: " << e.getBound() << endl;
+		cerr << "ERROR!! Attempted access out of bounds: " << e.getBound()
+			<< endl;
 	}
 	
 	return 0;
