@@ -40,7 +40,8 @@ Interpolator<T>::Interpolator(const Interpolator & cpy_intr)
 {
 	m_data = cpy_intr.m_data;
 	m_vector.clear();
-	for(auto itr = cpy_intr.m_vector.begin(); itr != cpy_intr.m_vector.end(); itr++)
+	for(auto itr = cpy_intr.m_vector.begin(); itr != cpy_intr.m_vector.end();
+		itr++)
 		this -> m_vector.push_back(*itr);
 }
 
@@ -55,14 +56,19 @@ Interpolator<T> Interpolator<T>::operator=(const Interpolator<T> & rhs) const
 }
 
 // operator== must be defined for type T
-//needs to check if the value corresponds to the last element and handle exception
+//needs to check if the value corresponds to the last element and handle 
+//exception
 template <typename T>
 const tuple<T, T, T> Interpolator<T>::operator[](const T index) const
 {
 	int counter = 0;
-	typename vector<tuple<T, T, T>>::const_iterator itr = this -> m_vector.begin();
-
-	if((m_data > 1) && (index < get<0>(*m_vector.rbegin())) && (index > get<0>(*m_vector.begin())))
+	typename vector<tuple<T, T, T>>::const_iterator itr = 
+		this -> m_vector.begin();
+	
+	//Checks if the size of the vector is > 1 and if the index is 
+	//within the bounds
+	if((m_data > 1) && (index < get<0>(*m_vector.rbegin())) && 
+		(index > get<0>(*m_vector.begin())))
 	{	
 		while(get<0>(*itr) <= index)
 		{
@@ -82,7 +88,8 @@ tuple<T, T, T> & Interpolator<T>::operator[](const T index)
 	int counter = 0;
 	typename vector<tuple<T, T, T>>::iterator itr = this -> m_vector.begin();
 
-	if((m_data > 1) && (index <= get<0>(*m_vector.rbegin())) && (index >= get<0>(*m_vector.begin())))
+	if((m_data > 1) && (index <= get<0>(*m_vector.rbegin())) && 
+		(index >= get<0>(*m_vector.begin())))
 	{	
 		while(get<0>(*itr) <= index)
 		{
@@ -105,9 +112,10 @@ tuple<T, T> Interpolator<T>::operator()(const T index)
 	tuple<T, T, T> second_set;
 	typename vector<tuple<T, T, T>>::iterator itr = this -> m_vector.begin();
 	
-	T bound_check = get<0>((*this)[index]); //sets up a checker for the while loop
-										   //instead of accessing it every iteration
+	T bound_check = get<0>((*this)[index]); //sets up a checker for the while
+								//loop instead of accessing it every iteration
 
+	//gets the lower and upper bound
 	while(get<0>(*itr) != bound_check)
 		advance(itr, 1);
 	
@@ -115,11 +123,16 @@ tuple<T, T> Interpolator<T>::operator()(const T index)
 	advance(itr, 1);
 	second_set = *itr;
 	
-	get<0>(new_tuple) = get<1>(first_set) + ((get<1>(second_set) - get<1>(first_set))
-		/ (get<0>(second_set) - get<0>(first_set))) * (index - get<0>(first_set));
+	//Interpolation formula for both dependent variable sets
+	get<0>(new_tuple) = get<1>(first_set) + 
+		((get<1>(second_set) - get<1>(first_set))
+		/ (get<0>(second_set) - get<0>(first_set))) * 
+		(index - get<0>(first_set));
 		
-	get<1>(new_tuple) = get<2>(first_set) + ((get<2>(second_set) - get<2>(first_set))
-		/ (get<0>(second_set) - get<0>(first_set))) * (index - get<0>(first_set));
+	get<1>(new_tuple) = get<2>(first_set) + 
+		((get<2>(second_set) - get<2>(first_set))
+		/ (get<0>(second_set) - get<0>(first_set))) * 
+		(index - get<0>(first_set));
 	return new_tuple;
 }
 
@@ -143,6 +156,7 @@ std::istream & operator >> (istream & in, Interpolator<T> & rhs)
 	
 	rhs.m_vector.clear();
 	
+	//you have to insert as many data points as the size of m_data
 	for(int i = 0; i < rhs.m_data; i++)
 	{
 		in >> get<0>(inserter);
@@ -151,7 +165,8 @@ std::istream & operator >> (istream & in, Interpolator<T> & rhs)
 		
 		rhs.m_vector.push_back(inserter);
 		
-		if(i == 0)
+		if(i == 0) //sets up a check to make sure the next inserted variable
+					//is greater than the last
 			previous = get<0>(inserter);
 		else
 		{

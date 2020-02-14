@@ -144,7 +144,9 @@ class Interpolator
 		
 		/*! \brief >> operator overload.
 		 *
-		 * Description: Allows the user to input data into the Interpolator.
+		 * Description: Allows the user to input data into the Interpolator. \n
+		 * This function only allows you to input as many points as the size of
+		 * the vector.
 		 * \param rhs is the Interpolator that store the input.
 		 * \param in allows the input stream to be modified.
 		 * \return The modified input stream.
